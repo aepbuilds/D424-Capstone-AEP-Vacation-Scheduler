@@ -1,4 +1,6 @@
 buildscript {
+    ext.roomVersion = "2.6.1"
+
     repositories {
         google()
         mavenCentral()
