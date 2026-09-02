@@ -18,7 +18,7 @@ import java.util.List;
 public class VacationListActivity extends AppCompatActivity {
     private AppRepository repository;
     private RecyclerView recyclerView;
-    //private VacationAdapter adapter;
+    private VacationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

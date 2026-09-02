@@ -160,13 +160,13 @@ public class VacationDetailsActivity extends AppCompatActivity {
             vacation.id = vacationId;
             repository.updateVacation(vacation, () -> {
                 // Schedule start and end date notifications [Requirement B3e]
-                NotificationHelper.scheduleVacationNotification(this, vacation, true);
-                NotificationHelper.scheduleVacationNotification(this, vacation, false);
-                finish();
+                //NotificationHelper.scheduleVacationNotification(this, vacation, true);
+                //NotificationHelper.scheduleVacationNotification(this, vacation, false);
+                //finish();
             });
         } else {
             repository.insertVacation(vacation, () -> {
-                finish();
+                //finish();
             });
         }
     }
