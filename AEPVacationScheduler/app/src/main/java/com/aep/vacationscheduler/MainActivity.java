@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.vacationscheduler.R;
+import com.aep.vacationscheduler.R;
 
 /**
  * MainActivity serves as the entry point of the application, providing
