@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Vacation;
-import com.aep.vacationscheduler.notifications.NotificationHelper;
+//import com.aep.vacationscheduler.notifications.NotificationHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
