@@ -10,13 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
+import com.aep.vacationscheduler.data.Excursion;
 import com.aep.vacationscheduler.data.Vacation;
 import com.aep.vacationscheduler.notifications.NotificationHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 /**
  * VacationDetailsActivity handles adding, updating, and deleting vacations,
@@ -53,11 +56,15 @@ public class VacationDetailsActivity extends AppCompatActivity {
         // Get vacation ID from intent to determine if we are editing or adding [Requirement B1, B3a]
         vacationId = getIntent().getIntExtra("vacationId", -1);
         if (vacationId != -1) {
-            currentVacation = repository.getVacationById(vacationId);
-            etTitle.setText(currentVacation.title);
-            etHotel.setText(currentVacation.hotel);
-            etStart.setText(currentVacation.startDate);
-            etEnd.setText(currentVacation.endDate);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                currentVacation = repository.getVacationById(vacationId);
+                runOnUiThread(() -> {
+                    etTitle.setText(currentVacation.title);
+                    etHotel.setText(currentVacation.hotel);
+                    etStart.setText(currentVacation.startDate);
+                    etEnd.setText(currentVacation.endDate);
+                });
+            });
         }
 
         // Use DatePickerDialog for date input to ensure correct formatting [Requirement B3c]
@@ -89,14 +96,18 @@ public class VacationDetailsActivity extends AppCompatActivity {
     private void refreshExcursions() {
         if (vacationId == -1) return;
         excursionRecyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
-        excursionAdapter = new ExcursionAdapter(repository.getExcursionsForVacation(vacationId), excursion -> {
-            // Navigate to excursion details view [Requirement B5a, C]
-            Intent intent = new Intent(this, ExcursionDetailsActivity.class);
-            intent.putExtra("vacationId", vacationId);
-            intent.putExtra("excursionId", excursion.id);
-            startActivity(intent);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Excursion> excursions = repository.getExcursionsForVacation(vacationId);
+            runOnUiThread(() -> {
+                excursionAdapter = new ExcursionAdapter(excursions, excursion -> {
+                    Intent intent = new Intent(this, ExcursionDetailsActivity.class);
+                    intent.putExtra("vacationId", vacationId);
+                    intent.putExtra("excursionId", excursion.id);
+                    startActivity(intent);
+                });
+                excursionRecyclerView.setAdapter(excursionAdapter);
+            });
         });
-        excursionRecyclerView.setAdapter(excursionAdapter);
     }
 
     @Override
@@ -176,13 +187,14 @@ public class VacationDetailsActivity extends AppCompatActivity {
      */
     private void deleteVacation() {
         if (vacationId == -1) return;
-        // Validation: prevent deletion if excursions are associated [Requirement B1b]
-        int count = repository.getExcursionCountForVacation(vacationId);
-        if (count > 0) {
-            Toast.makeText(this, R.string.error_delete_vacation, Toast.LENGTH_LONG).show();
-            return;
-        }
-        repository.deleteVacation(currentVacation, this::finish);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            int count = repository.getExcursionCountForVacation(vacationId);
+            if (count > 0) {
+                runOnUiThread(() -> Toast.makeText(this, R.string.error_delete_vacation, Toast.LENGTH_LONG).show());
+                return;
+            }
+            repository.deleteVacation(currentVacation, this::finish);
+        });
     }
 
     /**

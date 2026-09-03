@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 /**
  * ExcursionDetailsActivity handles adding, updating, and deleting excursions.
@@ -46,9 +47,13 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         excursionId = getIntent().getIntExtra("excursionId", -1);
 
         if (excursionId != -1) {
-            currentExcursion = repository.getExcursionById(excursionId);
-            etTitle.setText(currentExcursion.title);
-            etDate.setText(currentExcursion.date);
+            Executors.newSingleThreadExecutor().execute(() -> {
+                currentExcursion = repository.getExcursionById(excursionId);
+                runOnUiThread(() -> {
+                    etTitle.setText(currentExcursion.title);
+                    etDate.setText(currentExcursion.date);
+                });
+            });
         }
 
         // Use DatePickerDialog for consistent date input formatting [Requirement B5c]
@@ -85,46 +90,51 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         String title = etTitle.getText().toString();
         String date = etDate.getText().toString();
 
-        // 1. Basic validation: Ensure no fields are empty
         if (title.isEmpty() || date.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 2. Date format and logic validation [Requirement B5c]
         String dateFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        Date excursionDate;
         try {
-            Date excursionDate = sdf.parse(date);
-            Vacation vacation = repository.getVacationById(vacationId);
-            Date vacStart = sdf.parse(vacation.startDate);
-            Date vacEnd = sdf.parse(vacation.endDate);
-
-            // Validation: Excursion date must be between vacation start and end dates [Requirement B5e]
-            if (excursionDate.before(vacStart) || excursionDate.after(vacEnd)) {
-                Toast.makeText(this, R.string.error_excursion_date, Toast.LENGTH_LONG).show();
-                return;
-            }
+            excursionDate = sdf.parse(date);
         } catch (ParseException e) {
             Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Excursion excursion = new Excursion(vacationId, title, date);
-        if (excursionId != -1) {
-            excursion.id = excursionId;
-            repository.updateExcursion(excursion, () -> {
-                // Schedule notification for the excursion [Requirement B5d]
-                NotificationHelper.scheduleExcursionNotification(this, excursion);
-                finish();
-            });
-        } else {
-            repository.insertExcursion(excursion, () -> {
-                // Schedule notification for the excursion [Requirement B5d]
-                NotificationHelper.scheduleExcursionNotification(this, excursion);
-                finish();
-            });
-        }
+        Date finalExcursionDate = excursionDate;
+        Executors.newSingleThreadExecutor().execute(() -> {
+            Vacation vacation = repository.getVacationById(vacationId);
+            try {
+                Date vacStart = sdf.parse(vacation.startDate);
+                Date vacEnd = sdf.parse(vacation.endDate);
+
+                if (finalExcursionDate.before(vacStart) || finalExcursionDate.after(vacEnd)) {
+                    runOnUiThread(() -> Toast.makeText(this, R.string.error_excursion_date, Toast.LENGTH_LONG).show());
+                    return;
+                }
+            } catch (ParseException e) {
+                runOnUiThread(() -> Toast.makeText(this, "Invalid vacation date format", Toast.LENGTH_SHORT).show());
+                return;
+            }
+
+            Excursion excursion = new Excursion(vacationId, title, date);
+            if (excursionId != -1) {
+                excursion.id = excursionId;
+                repository.updateExcursion(excursion, () -> {
+                    NotificationHelper.scheduleExcursionNotification(this, excursion);
+                    finish();
+                });
+            } else {
+                repository.insertExcursion(excursion, () -> {
+                    NotificationHelper.scheduleExcursionNotification(this, excursion);
+                    finish();
+                });
+            }
+        });
     }
 
     /**
