@@ -4,8 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.ui.VacationListActivity;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.os.Build;
+
 
 /**
  * MainActivity serves as the entry point of the application, providing
@@ -16,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            }
+        }
 
         // Set up the button to navigate to the Vacation List activity [Requirement C]
         Button btnGoToVacations = findViewById(R.id.btnGoToVacations);

@@ -29,7 +29,6 @@ import java.util.concurrent.Executors;
 public class VacationDetailsActivity extends AppCompatActivity {
     private AppRepository repository;
     private EditText etTitle, etHotel, etStart, etEnd;
-    private Button btnSave, btnDelete, btnShare;
     private RecyclerView excursionRecyclerView;
     private ExcursionAdapter excursionAdapter;
 
@@ -47,9 +46,9 @@ public class VacationDetailsActivity extends AppCompatActivity {
         etHotel = findViewById(R.id.etHotel);
         etStart = findViewById(R.id.etStartDate);
         etEnd = findViewById(R.id.etEndDate);
-        btnSave = findViewById(R.id.btnSaveVacation);
-        btnDelete = findViewById(R.id.btnDeleteVacation);
-        btnShare = findViewById(R.id.btnShareVacation);
+        Button btnSave = findViewById(R.id.btnSaveVacation);
+        Button btnDelete = findViewById(R.id.btnDeleteVacation);
+        Button btnShare = findViewById(R.id.btnShareVacation);
         excursionRecyclerView = findViewById(R.id.excursionRecyclerView);
         Button btnAddExcursion = findViewById(R.id.btnAddExcursion);
 
@@ -157,6 +156,7 @@ public class VacationDetailsActivity extends AppCompatActivity {
             Date vacayStart = sdf.parse(start);
             Date vacayEnd = sdf.parse(end);
             // 3. Logic validation: End date must be after start date [Requirement B3d]
+            assert vacayEnd != null;
             if (vacayEnd.before(vacayStart)) {
                 Toast.makeText(this, R.string.error_end_date, Toast.LENGTH_LONG).show();
                 return;
@@ -176,9 +176,7 @@ public class VacationDetailsActivity extends AppCompatActivity {
                 finish();
             });
         } else {
-            repository.insertVacation(vacation, () -> {
-                finish();
-            });
+            repository.insertVacation(vacation, this::finish);
         }
     }
 

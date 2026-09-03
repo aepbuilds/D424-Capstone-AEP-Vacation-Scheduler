@@ -25,7 +25,6 @@ import java.util.concurrent.Executors;
 public class ExcursionDetailsActivity extends AppCompatActivity {
     private AppRepository repository;
     private EditText etTitle, etDate;
-    private Button btnSave, btnDelete;
     private Excursion currentExcursion;
     private int excursionId = -1;
     private int vacationId = -1;
@@ -39,8 +38,8 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         repository = new AppRepository(getApplication());
         etTitle = findViewById(R.id.etExcursionTitle);
         etDate = findViewById(R.id.etExcursionDate);
-        btnSave = findViewById(R.id.btnSaveExcursion);
-        btnDelete = findViewById(R.id.btnDeleteExcursion);
+        Button btnSave = findViewById(R.id.btnSaveExcursion);
+        Button btnDelete = findViewById(R.id.btnDeleteExcursion);
 
         // Get IDs from intent to determine if we are editing or adding [Requirement B5b]
         vacationId = getIntent().getIntExtra("vacationId", -1);
@@ -112,6 +111,7 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
                 Date vacStart = sdf.parse(vacation.startDate);
                 Date vacEnd = sdf.parse(vacation.endDate);
 
+                assert finalExcursionDate != null;
                 if (finalExcursionDate.before(vacStart) || finalExcursionDate.after(vacEnd)) {
                     runOnUiThread(() -> Toast.makeText(this, R.string.error_excursion_date, Toast.LENGTH_LONG).show());
                     return;
