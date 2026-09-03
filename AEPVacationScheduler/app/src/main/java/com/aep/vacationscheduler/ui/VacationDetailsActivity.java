@@ -21,11 +21,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-/**
- * VacationDetailsActivity handles adding, updating, and deleting vacations,
- * as well as viewing and adding excursions for a specific vacation.
- * Satisfies Requirements B1, B2, B3a-f, and C (Detailed Vacation View).
- */
 public class VacationDetailsActivity extends AppCompatActivity {
     private AppRepository repository;
     private EditText etTitle, etHotel, etStart, etEnd;

@@ -18,10 +18,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-/**
- * ExcursionDetailsActivity handles adding, updating, and deleting excursions.
- * Satisfies Requirements B4, B5a-e, and C (Detailed Excursion View).
- */
 public class ExcursionDetailsActivity extends AppCompatActivity {
     private AppRepository repository;
     private EditText etTitle, etDate;
@@ -80,11 +76,6 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         }, year, month, day);
         datePickerDialog.show();
     }
-
-    /**
-     * Validates inputs and saves the excursion to the database [Requirement B5b].
-     * Also schedules a notification for the excursion date [Requirement B5d].
-     */
     private void saveExcursion() {
         String title = etTitle.getText().toString();
         String date = etDate.getText().toString();

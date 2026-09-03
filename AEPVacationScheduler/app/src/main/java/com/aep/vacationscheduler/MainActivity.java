@@ -12,11 +12,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.os.Build;
 
-
-/**
- * MainActivity serves as the entry point of the application, providing
- * navigation to the vacation list screen [Requirement C].
- */
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

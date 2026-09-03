@@ -53,10 +53,6 @@ public class ExcursionListActivity extends AppCompatActivity {
         refreshList();
     }
 
-    /**
-     * Fetches the list of excursions for the current vacation from the repository and updates the adapter.
-     */
-
     private void refreshList() {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Excursion> excursions = repository.getExcursionsForVacation(vacationId);
