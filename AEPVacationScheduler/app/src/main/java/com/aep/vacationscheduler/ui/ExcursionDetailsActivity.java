@@ -10,7 +10,7 @@ import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Excursion;
 import com.aep.vacationscheduler.data.Vacation;
-//import com.aep.vacationscheduler.notifications.NotificationHelper;
+import com.aep.vacationscheduler.notifications.NotificationHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -115,14 +115,14 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
             excursion.id = excursionId;
             repository.updateExcursion(excursion, () -> {
                 // Schedule notification for the excursion [Requirement B5d]
-                //NotificationHelper.scheduleExcursionNotification(this, excursion);
-                //finish();
+                NotificationHelper.scheduleExcursionNotification(this, excursion);
+                finish();
             });
         } else {
             repository.insertExcursion(excursion, () -> {
                 // Schedule notification for the excursion [Requirement B5d]
-                //NotificationHelper.scheduleExcursionNotification(this, excursion);
-                //finish();
+                NotificationHelper.scheduleExcursionNotification(this, excursion);
+                finish();
             });
         }
     }

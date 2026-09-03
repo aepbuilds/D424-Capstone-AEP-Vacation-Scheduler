@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Vacation;
-//import com.aep.vacationscheduler.notifications.NotificationHelper;
+import com.aep.vacationscheduler.notifications.NotificationHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -160,13 +160,13 @@ public class VacationDetailsActivity extends AppCompatActivity {
             vacation.id = vacationId;
             repository.updateVacation(vacation, () -> {
                 // Schedule start and end date notifications [Requirement B3e]
-                //NotificationHelper.scheduleVacationNotification(this, vacation, true);
-                //NotificationHelper.scheduleVacationNotification(this, vacation, false);
-                //finish();
+                NotificationHelper.scheduleVacationNotification(this, vacation, true);
+                NotificationHelper.scheduleVacationNotification(this, vacation, false);
+                finish();
             });
         } else {
             repository.insertVacation(vacation, () -> {
-                //finish();
+                finish();
             });
         }
     }
