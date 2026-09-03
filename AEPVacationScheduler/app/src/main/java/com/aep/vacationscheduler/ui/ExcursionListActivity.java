@@ -10,6 +10,7 @@ import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Excursion;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * ExcursionListActivity displays a list of excursions associated with a specific vacation.
@@ -55,15 +56,20 @@ public class ExcursionListActivity extends AppCompatActivity {
     /**
      * Fetches the list of excursions for the current vacation from the repository and updates the adapter.
      */
+
     private void refreshList() {
-        List<Excursion> excursions = repository.getExcursionsForVacation(vacationId);
-        adapter = new ExcursionAdapter(excursions, excursion -> {
-            // Navigate to excursion details view when an item is clicked
-            Intent intent = new Intent(this, ExcursionDetailsActivity.class);
-            intent.putExtra("vacationId", vacationId);
-            intent.putExtra("excursionId", excursion.id);
-            startActivity(intent);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<Excursion> excursions = repository.getExcursionsForVacation(vacationId);
+            runOnUiThread(() -> {
+                adapter = new ExcursionAdapter(excursions, excursion -> {
+                    // Navigate to excursion details view when an item is clicked
+                    Intent intent = new Intent(this, ExcursionDetailsActivity.class);
+                    intent.putExtra("vacationId", vacationId);
+                    intent.putExtra("excursionId", excursion.id);
+                    startActivity(intent);
+                });
+                recyclerView.setAdapter(adapter);
+            });
         });
-        recyclerView.setAdapter(adapter);
     }
 }

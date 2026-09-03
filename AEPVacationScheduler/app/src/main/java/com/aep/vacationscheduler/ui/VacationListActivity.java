@@ -54,16 +54,16 @@ public class VacationListActivity extends AppCompatActivity {
      * Fetches the current list of vacations from the repository and updates the RecyclerView adapter [Requirement C].
      */
     private void refreshList() {
-
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Vacation> vacations = repository.getAllVacations();
-            adapter = new VacationAdapter(vacations, vacation -> {
-                // Navigate to details view when a vacation item is clicked [Requirement B3a, C]
-                Intent intent = new Intent(this, VacationDetailsActivity.class);
-                intent.putExtra("vacationId", vacation.id);
-                startActivity(intent);
+            runOnUiThread(() -> {
+                adapter = new VacationAdapter(vacations, vacation -> {
+                    Intent intent = new Intent(this, VacationDetailsActivity.class);
+                    intent.putExtra("vacationId", vacation.id);
+                    startActivity(intent);
+                });
+                recyclerView.setAdapter(adapter);
             });
-            recyclerView.setAdapter(adapter);
         });
     }
 }
