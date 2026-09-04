@@ -12,10 +12,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-/**
- * VacationListActivity displays a list of all scheduled vacations [Requirement C].
- * It allows users to navigate to a detailed view of a vacation or add a new one [Requirement B1].
- */
 public class VacationListActivity extends AppCompatActivity {
     private AppRepository repository;
     private RecyclerView recyclerView;
@@ -26,14 +22,11 @@ public class VacationListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_list);
 
-        // Initialize the repository to handle data operations [Requirement B1]
         repository = new AppRepository(getApplication());
 
-        // Setup RecyclerView with a LinearLayoutManager [Requirement C]
         recyclerView = findViewById(R.id.vacationRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Set up the FloatingActionButton to navigate to the Vacation Details activity for adding a new vacation [Requirement B1]
         FloatingActionButton fab = findViewById(R.id.fabAddVacation);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, VacationDetailsActivity.class);
@@ -46,13 +39,9 @@ public class VacationListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh the list whenever the activity returns to the foreground
         refreshList();
     }
 
-    /**
-     * Fetches the current list of vacations from the repository and updates the RecyclerView adapter [Requirement C].
-     */
     private void refreshList() {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Vacation> vacations = repository.getAllVacations();

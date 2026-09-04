@@ -3,10 +3,6 @@ package com.aep.vacationscheduler.data;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-/**
- * Vacation entity representing a vacation record in the database.
- * Satisfies Requirement B1 (Room Framework).
- */
 @Entity(tableName = "vacations")
 public class Vacation {
     @PrimaryKey(autoGenerate = true)

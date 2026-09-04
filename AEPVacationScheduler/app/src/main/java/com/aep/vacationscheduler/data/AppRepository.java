@@ -7,18 +7,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * AppRepository acts as a mediator between the data sources (Room database)
- * and the rest of the application, abstracting the data access layer.
- * Satisfies Requirement B1 (Room Framework).
- */
 public class AppRepository {
     private final VacationDao vacationDao;
     private final ExcursionDao excursionDao;
 
-    // ExecutorService used to run database operations on background threads to avoid blocking the UI thread
     private final ExecutorService executorService = Executors.newFixedThreadPool(4);
-    // Handler tied to the main looper so callbacks can safely touch UI/Activity state
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public AppRepository(Application application) {

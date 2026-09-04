@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Set up the button to navigate to the Vacation List activity [Requirement C]
         Button btnGoToVacations = findViewById(R.id.btnGoToVacations);
         btnGoToVacations.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, VacationListActivity.class);

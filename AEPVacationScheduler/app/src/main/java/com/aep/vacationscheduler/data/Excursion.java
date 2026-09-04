@@ -4,10 +4,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-/**
- * Excursion entity representing an excursion record in the database.
- * Satisfies Requirement B1 (Room Framework).
- */
 @Entity(tableName = "excursions",
         foreignKeys = @ForeignKey(entity = Vacation.class,
                 parentColumns = "id",
@@ -16,7 +12,7 @@ import androidx.room.PrimaryKey;
 public class Excursion {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public int vacationId; // Reference to the associated vacation
+    public int vacationId;
     public String title;
     public String date;
 

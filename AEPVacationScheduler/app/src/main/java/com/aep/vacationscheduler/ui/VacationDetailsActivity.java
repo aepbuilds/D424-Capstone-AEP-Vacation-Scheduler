@@ -35,7 +35,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_details);
 
-        // Initialize repository and UI components [Requirement C]
         repository = new AppRepository(getApplication());
         etTitle = findViewById(R.id.etVacationTitle);
         etHotel = findViewById(R.id.etHotel);
@@ -47,7 +46,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         excursionRecyclerView = findViewById(R.id.excursionRecyclerView);
         Button btnAddExcursion = findViewById(R.id.btnAddExcursion);
 
-        // Get vacation ID from intent to determine if we are editing or adding [Requirement B1, B3a]
         vacationId = getIntent().getIntExtra("vacationId", -1);
         if (vacationId != -1) {
             Executors.newSingleThreadExecutor().execute(() -> {
@@ -61,19 +59,16 @@ public class VacationDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Use DatePickerDialog for date input to ensure correct formatting [Requirement B3c]
         etStart.setOnClickListener(v -> showDatePicker(etStart));
         etEnd.setOnClickListener(v -> showDatePicker(etEnd));
 
-        // Set click listeners for action buttons [Requirement B1, B3b, B3f]
         btnSave.setOnClickListener(v -> saveVacation());
         btnDelete.setOnClickListener(v -> deleteVacation());
         btnShare.setOnClickListener(v -> shareVacation());
 
-        // Add excursion button [Requirement B3h]
         btnAddExcursion.setOnClickListener(v -> {
             if (vacationId == -1) {
-                Toast.makeText(this, "Please save vacation first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please save Vacation first", Toast.LENGTH_SHORT).show();
                 return;
             }
             Intent intent = new Intent(this, ExcursionDetailsActivity.class);
@@ -84,9 +79,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         refreshExcursions();
     }
 
-    /**
-     * Reloads the list of excursions associated with the current vacation [Requirement B3g].
-     */
     private void refreshExcursions() {
         if (vacationId == -1) return;
         excursionRecyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
@@ -110,9 +102,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         refreshExcursions();
     }
 
-    /**
-     * Displays a DatePickerDialog to help the user select a date [Requirement B3c].
-     */
     private void showDatePicker(EditText editText) {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -128,29 +117,22 @@ public class VacationDetailsActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    /**
-     * Validates inputs and saves the vacation to the database [Requirement B1, B3b].
-     * Also schedules notifications for the start and end dates [Requirement B3e].
-     */
     private void saveVacation() {
         String title = etTitle.getText().toString();
         String hotel = etHotel.getText().toString();
         String start = etStart.getText().toString();
         String end = etEnd.getText().toString();
 
-        // 1. Basic validation: Ensure no fields are empty
         if (title.isEmpty() || hotel.isEmpty() || start.isEmpty() || end.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 2. Date format validation [Requirement B3c]
         String dateFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
         try {
             Date vacayStart = sdf.parse(start);
             Date vacayEnd = sdf.parse(end);
-            // 3. Logic validation: End date must be after start date [Requirement B3d]
             assert vacayEnd != null;
             if (vacayEnd.before(vacayStart)) {
                 Toast.makeText(this, R.string.error_end_date, Toast.LENGTH_LONG).show();
@@ -165,7 +147,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         if (vacationId != -1) {
             vacation.id = vacationId;
             repository.updateVacation(vacation, () -> {
-                // Schedule start and end date notifications [Requirement B3e]
                 NotificationHelper.scheduleVacationNotification(this, vacation, true);
                 NotificationHelper.scheduleVacationNotification(this, vacation, false);
                 finish();
@@ -175,9 +156,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Deletes the current vacation if it has no associated excursions [Requirement B1b].
-     */
     private void deleteVacation() {
         if (vacationId == -1) return;
         Executors.newSingleThreadExecutor().execute(() -> {
@@ -190,9 +168,6 @@ public class VacationDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Shares the vacation details via a system share intent [Requirement B3f].
-     */
     private void shareVacation() {
         String title = etTitle.getText().toString();
         String hotel = etHotel.getText().toString();

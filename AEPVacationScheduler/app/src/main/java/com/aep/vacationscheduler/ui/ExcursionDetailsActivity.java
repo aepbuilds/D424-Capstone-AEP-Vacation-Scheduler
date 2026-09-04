@@ -30,14 +30,12 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_excursion_details);
 
-        // Initialize repository and UI components [Requirement C]
         repository = new AppRepository(getApplication());
         etTitle = findViewById(R.id.etExcursionTitle);
         etDate = findViewById(R.id.etExcursionDate);
         Button btnSave = findViewById(R.id.btnSaveExcursion);
         Button btnDelete = findViewById(R.id.btnDeleteExcursion);
 
-        // Get IDs from intent to determine if we are editing or adding [Requirement B5b]
         vacationId = getIntent().getIntExtra("vacationId", -1);
         excursionId = getIntent().getIntExtra("excursionId", -1);
 
@@ -51,17 +49,12 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
             });
         }
 
-        // Use DatePickerDialog for consistent date input formatting [Requirement B5c]
         etDate.setOnClickListener(v -> showDatePicker(etDate));
 
-        // Set click listeners for action buttons [Requirement B5b]
         btnSave.setOnClickListener(v -> saveExcursion());
         btnDelete.setOnClickListener(v -> deleteExcursion());
     }
 
-    /**
-     * Displays a DatePickerDialog to help the user select a date [Requirement B5c].
-     */
     private void showDatePicker(EditText editText) {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -108,7 +101,7 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
                     return;
                 }
             } catch (ParseException e) {
-                runOnUiThread(() -> Toast.makeText(this, "Invalid vacation date format", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(this, "Invalid Vacation date format", Toast.LENGTH_SHORT).show());
                 return;
             }
 
@@ -128,9 +121,6 @@ public class ExcursionDetailsActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Deletes the current excursion from the database [Requirement B5b].
-     */
     private void deleteExcursion() {
         if (currentExcursion == null) return;
         repository.deleteExcursion(currentExcursion, this::finish);

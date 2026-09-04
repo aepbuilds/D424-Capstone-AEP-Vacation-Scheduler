@@ -10,16 +10,10 @@ import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.Excursion;
 import java.util.List;
 
-/**
- * ExcursionAdapter is a RecyclerView adapter that manages the display of a list of excursions [Requirement B3g, C].
- */
 public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.ExcursionViewHolder> {
     private final List<Excursion> excursions;
     private final ExcursionClickListener listener;
 
-    /**
-     * Interface to handle click events on excursion items.
-     */
     public interface ExcursionClickListener {
         void onExcursionClick(Excursion excursion);
     }
@@ -32,7 +26,6 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     @NonNull
     @Override
     public ExcursionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the item layout for a single excursion [Requirement C]
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_excursion, parent, false);
         return new ExcursionViewHolder(view);
     }
@@ -40,11 +33,9 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     @Override
     public void onBindViewHolder(@NonNull ExcursionViewHolder holder, int position) {
         Excursion excursion = excursions.get(position);
-        // Bind excursion data to the TextViews [Requirement B4]
         holder.tvTitle.setText(excursion.title);
         holder.tvDate.setText(excursion.date);
 
-        // Set a click listener to navigate to details view [Requirement B5a, C]
         holder.itemView.setOnClickListener(v -> listener.onExcursionClick(excursion));
     }
 
@@ -53,9 +44,6 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         return excursions.size();
     }
 
-    /**
-     * ViewHolder class to hold references to the UI elements of each excursion item.
-     */
     static class ExcursionViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDate;
         ExcursionViewHolder(View itemView) {
