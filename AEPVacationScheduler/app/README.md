@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/32029163/README.md)
 # AEP Vacation Scheduler
 
 ## Title and Purpose
@@ -21,25 +20,25 @@ an abstraction layer over SQLite.
 ### Vacation List
 1. The Vacation List displays every vacation currently saved, showing its title and
    date range.
-2. Tap the **+** floating action button in the bottom-right corner to add a new
+2. Tap the **+** floating action button in the bottom right corner to add a new
    vacation.
 3. Tap any existing vacation in the list to open its detailed view.
 
 ### Adding / Editing a Vacation (Vacation Details screen)
 1. Enter a **title**, **hotel/accommodation**, **start date**, and **end date**
-   (format `MM/dd/yy`, e.g. `09/02/26`).
+   (format `MM/dd/yy`, e.g. `09/02/26`) 
 2. Tap **Save**.
-   - If any field is left blank, a validation message appears and the vacation is
-     not saved.
-   - If a date is entered in an invalid format, a validation message appears.
-   - If the end date is not after the start date, a validation message appears
-     ("Vacation end date must be after the start date").
-   - On success, the vacation is written to the Room database and an alert is
-     scheduled for both the start date and the end date.
+    - If any field is left blank, a validation message appears and the vacation is
+      not saved.
+    - If a date is entered in an invalid format, a validation message appears.
+    - If the end date is not after the start date, a validation message appears
+      ("Vacation end date must be after the start date").
+    - On success, the vacation is written to the Room database and an alert is
+      scheduled for both the start date and the end date.
 3. Tap **Delete** to remove the vacation.
-   - If one or more excursions are still associated with the vacation, deletion is
-     blocked and a validation message is shown.
-   - Delete all associated excursions first, then delete the vacation.
+    - If one or more excursions are still associated with the vacation, deletion is
+      blocked and a validation message is shown.
+    - Delete all associated excursions first, then delete the vacation.
 4. Tap **Share** to open the Android share sheet with the vacation's title, hotel,
    and dates pre-populated as text, ready to send via email, SMS, clipboard, or any
    other installed sharing target.
@@ -51,12 +50,12 @@ an abstraction layer over SQLite.
    existing excursion in the list to edit it.
 3. On the Excursion Details screen, enter an **excursion title** and **date**
    (format `MM/dd/yy`), then tap **Save**.
-   - If a field is left blank or the date is formatted incorrectly, a validation
-     message appears.
-   - If the excursion date falls outside the parent vacation's start/end date
-     range, a validation message appears ("Excursion date must be within the
-     Vacation dates").
-   - On success, an alert is scheduled for the excursion date.
+    - If a field is left blank or the date is formatted incorrectly, a validation
+      message appears.
+    - If the excursion date falls outside the parent vacation's start/end date
+      range, a validation message appears ("Excursion date must be within the
+      Vacation dates").
+    - On success, an alert is scheduled for the excursion date.
 4. Tap **Delete** on the Excursion Details screen to remove that excursion and
    return to the vacation's detail view.
 

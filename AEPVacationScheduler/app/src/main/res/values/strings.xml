@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">AEP Vacation Scheduler</string>
+    <string name="add_vacation">Add Vacation</string>
+    <string name="vacation_title">Vacation Title</string>
+    <string name="hotel">Hotel or Accommodations</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="add_excursion">Add Excursion</string>
+    <string name="excursion_title">Excursion Title</string>
+    <string name="excursion_date">Excursion Date</string>
+    <string name="error_end_date">Vacation end date must be after the start date</string>
+    <string name="error_excursion_date">Excursion date must be within the Vacation dates</string>
+    <string name="error_delete_vacation">Cannot delete vacation with associated Excursions</string>
+    <string name="excursions">Excursions</string>
+    <string name="welcome_to_aep_vacation_scheduler">Welcome to AEP Vacation Scheduler!</string>
+    <string name="manage_vacations">Manage Vacations</string>
+</resources>
