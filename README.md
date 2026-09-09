@@ -90,4 +90,4 @@ The signed APK included with this submission is deployed for **Android 8.0
 ## Repository
 
 GitHub repository:
-[https://gitlab.com/wgu-gitlab-environment/student-repos/aphomth/d308-mobile-application-development-android/-/tree/develop?ref_type=heads](https://github.com/aepbuilds/D424-Capstone-AEP-Vacation-Scheduler)
+[https://github.com/aepbuilds/D424-Capstone-AEP-Vacation-Scheduler](https://github.com/aepbuilds/D424-Capstone-AEP-Vacation-Scheduler)
