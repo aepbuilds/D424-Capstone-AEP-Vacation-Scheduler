@@ -12,13 +12,30 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import java.util.ArrayList;
+
 public class VacationListActivity extends AppCompatActivity {
     private AppRepository repository;
     private RecyclerView recyclerView;
-    private VacationAdapter adapter;
+
+    private List<Vacation> allVacations = new ArrayList<>();
+    private EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        etSearch = findViewById(R.id.etSearchVacations);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterVacations(s.toString());
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_list);
 
@@ -46,13 +63,25 @@ public class VacationListActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Vacation> vacations = repository.getAllVacations();
             runOnUiThread(() -> {
-                adapter = new VacationAdapter(vacations, vacation -> {
-                    Intent intent = new Intent(this, VacationDetailsActivity.class);
-                    intent.putExtra("vacationId", vacation.id);
-                    startActivity(intent);
-                });
-                recyclerView.setAdapter(adapter);
+                allVacations = vacations;
+                filterVacations(etSearch.getText().toString());
             });
         });
+    }
+
+    private void filterVacations(String query) {
+        List<Vacation> filtered = new ArrayList<>();
+        String lower = query.toLowerCase().trim();
+        for (Vacation v : allVacations) {
+            if (v.title.toLowerCase().contains(lower)) {
+                filtered.add(v);
+            }
+        }
+        VacationAdapter adapter = new VacationAdapter(filtered, vacation -> {
+            Intent intent = new Intent(this, VacationDetailsActivity.class);
+            intent.putExtra("vacationId", vacation.id);
+            startActivity(intent);
+        });
+        recyclerView.setAdapter(adapter);
     }
 }
