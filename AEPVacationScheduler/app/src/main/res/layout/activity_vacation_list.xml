@@ -13,7 +13,7 @@
             android:id="@+id/etSearchVacations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search vacations by title"
+            android:hint="Search Vacations by title"
             android:inputType="text"
             android:padding="12dp" />
 
