@@ -10,18 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AEPVacationScheduler">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".ui.LoginActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".ui.ReportActivity" android:exported="false" />
         <activity android:name=".ui.VacationListActivity" />
         <activity android:name=".ui.VacationDetailsActivity" />
-        <activity android:name=".ui.ExcursionListActivity" />
+        <activity android:name=".ui.ExcursionListActivity" android:exported="false"/>
         <activity android:name=".ui.ExcursionDetailsActivity" />
 
         <receiver android:name=".notifications.NotificationReceiver" />

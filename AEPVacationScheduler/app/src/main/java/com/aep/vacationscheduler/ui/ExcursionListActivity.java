@@ -8,15 +8,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Excursion;
+import com.aep.vacationscheduler.data.Vacation;
+import com.aep.vacationscheduler.util.SearchFilter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.concurrent.Executors;
+
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import java.util.ArrayList;
 
 public class ExcursionListActivity extends AppCompatActivity {
     private AppRepository repository;
     private RecyclerView recyclerView;
     private ExcursionAdapter adapter;
     private int vacationId;
+
+    private List<Excursion> allExcursions = new ArrayList<>();
+    private EditText etSearch;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,15 @@ public class ExcursionListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.excursionRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        etSearch = findViewById(R.id.etSearchExcursions);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterExcursions(s.toString());
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
 
         FloatingActionButton fab = findViewById(R.id.fabAddExcursion);
         fab.setOnClickListener(v -> {
@@ -49,14 +70,19 @@ public class ExcursionListActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(() -> {
             List<Excursion> excursions = repository.getExcursionsForVacation(vacationId);
             runOnUiThread(() -> {
-                adapter = new ExcursionAdapter(excursions, excursion -> {
-                    Intent intent = new Intent(this, ExcursionDetailsActivity.class);
-                    intent.putExtra("vacationId", vacationId);
-                    intent.putExtra("excursionId", excursion.id);
-                    startActivity(intent);
-                });
-                recyclerView.setAdapter(adapter);
+                allExcursions = excursions;
+                filterExcursions(etSearch.getText().toString());
             });
         });
+    }
+
+    private void filterExcursions(String query) {
+        List<Excursion> filtered = SearchFilter.filterExcursionsByTitle(allExcursions, query);
+        ExcursionAdapter adapter = new ExcursionAdapter(filtered, excursion -> {
+            Intent intent = new Intent(this, ExcursionDetailsActivity.class);
+            intent.putExtra("excursionId", excursion.id);
+            startActivity(intent);
+        });
+        recyclerView.setAdapter(adapter);
     }
 }
