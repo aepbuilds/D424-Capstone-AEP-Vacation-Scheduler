@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Vacation;
+import com.aep.vacationscheduler.util.SearchFilter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -70,13 +71,7 @@ public class VacationListActivity extends AppCompatActivity {
     }
 
     private void filterVacations(String query) {
-        List<Vacation> filtered = new ArrayList<>();
-        String lower = query.toLowerCase().trim();
-        for (Vacation v : allVacations) {
-            if (v.title.toLowerCase().contains(lower)) {
-                filtered.add(v);
-            }
-        }
+        List<Vacation> filtered = SearchFilter.filterVacationsByTitle(allVacations, query);
         VacationAdapter adapter = new VacationAdapter(filtered, vacation -> {
             Intent intent = new Intent(this, VacationDetailsActivity.class);
             intent.putExtra("vacationId", vacation.id);

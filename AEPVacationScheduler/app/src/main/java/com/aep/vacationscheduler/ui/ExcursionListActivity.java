@@ -9,6 +9,7 @@ import com.aep.vacationscheduler.R;
 import com.aep.vacationscheduler.data.AppRepository;
 import com.aep.vacationscheduler.data.Excursion;
 import com.aep.vacationscheduler.data.Vacation;
+import com.aep.vacationscheduler.util.SearchFilter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -76,16 +77,9 @@ public class ExcursionListActivity extends AppCompatActivity {
     }
 
     private void filterExcursions(String query) {
-        List<Excursion> filtered = new ArrayList<>();
-        String lower = query.toLowerCase().trim();
-        for (Excursion e : allExcursions) {
-            if (e.title.toLowerCase().contains(lower)) {
-                filtered.add(e);
-            }
-        }
+        List<Excursion> filtered = SearchFilter.filterExcursionsByTitle(allExcursions, query);
         ExcursionAdapter adapter = new ExcursionAdapter(filtered, excursion -> {
             Intent intent = new Intent(this, ExcursionDetailsActivity.class);
-            intent.putExtra("vacationId", vacationId);
             intent.putExtra("excursionId", excursion.id);
             startActivity(intent);
         });
