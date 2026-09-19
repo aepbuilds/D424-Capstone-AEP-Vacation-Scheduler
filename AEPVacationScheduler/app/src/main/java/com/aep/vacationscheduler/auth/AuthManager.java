@@ -41,6 +41,10 @@ public class AuthManager {
     }
 
     public boolean login(String username, String password) {
+        if (getRemainingLockoutMillis() > 0) {
+            return false;
+        }
+
         String storedUsername = prefs.getString(KEY_USERNAME, null);
         String storedSalt = prefs.getString(KEY_SALT, null);
         String storedHash = prefs.getString(KEY_PASSWORD_HASH, null);

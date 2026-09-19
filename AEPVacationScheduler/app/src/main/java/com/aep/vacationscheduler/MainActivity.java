@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.aep.vacationscheduler.auth.AuthManager;
+import com.aep.vacationscheduler.ui.LoginActivity;
 import com.aep.vacationscheduler.ui.ReportActivity;
 import com.aep.vacationscheduler.ui.VacationListActivity;
 
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         btnGoToVacations.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, VacationListActivity.class);
             startActivity(intent);
+        });
+
+        findViewById(R.id.btnLogout).setOnClickListener(v -> {
+            new AuthManager(this).logout();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         });
 
         findViewById(R.id.btnViewReport).setOnClickListener(v -> {
