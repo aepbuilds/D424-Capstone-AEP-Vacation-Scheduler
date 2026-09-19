@@ -27,6 +27,14 @@ public class VacationListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vacation_list);
+
+        repository = new AppRepository(getApplication());
+
+        recyclerView = findViewById(R.id.vacationRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         etSearch = findViewById(R.id.etSearchVacations);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -35,14 +43,6 @@ public class VacationListActivity extends AppCompatActivity {
             }
             @Override public void afterTextChanged(Editable s) {}
         });
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vacation_list);
-
-        repository = new AppRepository(getApplication());
-
-        recyclerView = findViewById(R.id.vacationRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton fab = findViewById(R.id.fabAddVacation);
         fab.setOnClickListener(v -> {
