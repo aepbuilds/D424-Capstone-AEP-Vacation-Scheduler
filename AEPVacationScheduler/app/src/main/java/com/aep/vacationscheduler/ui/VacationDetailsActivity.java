@@ -59,6 +59,12 @@ public class VacationDetailsActivity extends AppCompatActivity {
             });
         }
 
+        findViewById(R.id.btnViewAllExcursions).setOnClickListener(v -> {
+            Intent intent = new Intent(this, ExcursionListActivity.class);
+            intent.putExtra("vacationId", vacationId);
+            startActivity(intent);
+        });
+
         etStart.setOnClickListener(v -> showDatePicker(etStart));
         etEnd.setOnClickListener(v -> showDatePicker(etEnd));
 

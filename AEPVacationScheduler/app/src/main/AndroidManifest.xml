@@ -19,7 +19,7 @@
         <activity android:name=".MainActivity" android:exported="false" />
         <activity android:name=".ui.VacationListActivity" />
         <activity android:name=".ui.VacationDetailsActivity" />
-        <activity android:name=".ui.ExcursionListActivity" />
+        <activity android:name=".ui.ExcursionListActivity" android:exported="false"/>
         <activity android:name=".ui.ExcursionDetailsActivity" />
 
         <receiver android:name=".notifications.NotificationReceiver" />
